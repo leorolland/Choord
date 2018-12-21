@@ -1,0 +1,20 @@
+table {
+  background-color: rgb(235, 235, 235);
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+td {
+  width: 35px;
+  height: 5px;
+  padding: 1px;
+  border: 1px solid black;
+  text-align: center;
+}
+.casezero {
+  background-color: rgb(145, 145, 145);
+  border-right: 3px dotted black;
+}
+.fret {
+  border: none;
+  background-color: white;
+}

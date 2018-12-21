@@ -1,1 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
+.note {
+  display: inline-block;
+  font-family: sans-serif;
+  color: white;
+  font-size: 0.75em;
+  padding: 0px;
+  font-weight: 600;
+  padding-top: 10px;
+  height: 25px;
+  width: 32px;
+  border-radius: 50px;
+  background-color: grey;
+  margin: 0px;
+  text-align: center;
+}
+.C {
+  background-color: rgb(141, 71, 71);
+}
+.CS {
+  background-color: rgb(122, 61, 26);
+}
+.D {
+  background-color: rgb(122, 104, 26);
+}
+.DS {
+  background-color: rgb(104, 122, 26);
+}
+.E {
+  background-color: rgb(53, 122, 26);
+}
+.F {
+  background-color: rgb(26, 122, 90);
+}
+.FS {
+  background-color: rgb(26, 103, 122);
+}
+.G {
+  background-color: rgb(26, 68, 122);
+}
+.GS {
+  background-color: rgb(52, 26, 122);
+}
+.A {
+  background-color: rgb(87, 26, 122);
+}
+.AS {
+  background-color: rgb(111, 26, 122);
+}
+.B {
+  background-color: rgb(121, 66, 100);
+}

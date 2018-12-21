@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from './music/Note';
+import { NoteCode } from './music/NoteCode';
+import { Gamme } from './music/Gamme';
 
 @Component({
   selector: 'app-root',
@@ -7,15 +9,18 @@ import { Note } from './music/Note';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  Gamme = Gamme;
+  NoteCode = NoteCode;
+  Note = Note;
   
   title = 'SolfegeJs';
 
-  gamme: Note[] = [];
+  allowedNotes: Array<NoteCode> = Gamme.asNoteCodes(Gamme.majorOf(NoteCode.C));
+
 
   ngOnInit() {
-    for (let index = 0; index < 50; index++) {
-      this.gamme.push(Note.numberToNote(index))
-    }
   }
+
+  
 
 }

@@ -1,46 +1,60 @@
+import { notStrictEqual } from "assert";
+import { NoteCode } from "./NoteCode";
+
 export class Note {
 
-  frequency: number;
-  name: String;
-
-  constructor(name) {
-    this.name = name
+  public static asString(note: NoteCode): string {
+    switch (note) {
+      case NoteCode.C:
+        return "Do"
+      case NoteCode.CS:
+        return "Do#"
+      case NoteCode.D:
+        return "Ré"
+      case NoteCode.DS:
+        return "Ré#"
+      case NoteCode.E:
+        return "Mi"
+      case NoteCode.F:
+        return "Fa"
+      case NoteCode.FS:
+        return "Fa#"
+      case NoteCode.G:
+        return "Sol#"
+      case NoteCode.GS:
+        return "Sol#"
+      case NoteCode.A:
+        return "La"
+      case NoteCode.AS:
+        return "La#"
+      case NoteCode.B:
+        return "Si"
+    }
   }
 
-  public toString(): String {
-    return this.name;
+  public static notes: Array<NoteCode> = [NoteCode.C, NoteCode.CS, NoteCode.D, NoteCode.DS, NoteCode.E, NoteCode.F, NoteCode.FS, NoteCode.G, NoteCode.GS, NoteCode.A, NoteCode.AS, NoteCode.B];
+
+  private noteCode: NoteCode;
+
+  constructor(code: NoteCode) {
+    this.noteCode = code;
+  }
+
+  public getNoteCode(): NoteCode {
+    return this.noteCode;
+  }
+
+  public toString(): string {
+    return this.noteCode;
+  }
+
+  public getNumber(): number {
+    return Note.notes.indexOf(this.noteCode);
   }
 
   public static numberToNote(input: number): Note {
-    const rest: number = input % 12;
-    switch (rest) {
-      case 0:
-        return new Note("Do");
-      case 1:
-        return new Note("Do#");
-      case 2:
-        return new Note("Ré");
-      case 3:
-        return new Note("Ré#");
-      case 4:
-        return new Note("Mi");
-      case 5:
-        return new Note("Fa");
-      case 6:
-        return new Note("Fa#");
-      case 7:
-        return new Note("Sol");
-      case 8:
-        return new Note("Sol#");
-      case 9:
-        return new Note("La");
-      case 10:
-        return new Note("La#");
-      case 11:
-        return new Note("Si");
-      default:
-        return new Note("ERREUR:Note")
-    }
+    const rest: number = input % Note.notes.length;
+    return new Note(Note.notes[rest]);
   }
 
 }

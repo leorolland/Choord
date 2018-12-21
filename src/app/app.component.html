@@ -1,7 +1,6 @@
-App
+<h1>Dictionnaire de gammes</h1>
 
-<table>
-  <tr *ngFor="let note of gamme">
-    <td>{{ note.toString() }}</td>
-  </tr>
-</table>
+<ng-container *ngFor="let noteCode of Note.notes">
+  <h2>Gamme Majeure en {{ Note.asString(noteCode) }}</h2>
+  <app-six-strings [allowedNotes]="Gamme.asNoteCodes(Gamme.majorOf(noteCode))"></app-six-strings>
+</ng-container>
