@@ -20,7 +20,7 @@ export class Note {
       case NoteCode.FS:
         return "Fa#"
       case NoteCode.G:
-        return "Sol#"
+        return "Sol"
       case NoteCode.GS:
         return "Sol#"
       case NoteCode.A:

@@ -1,13 +1,13 @@
 table {
   background-color: rgb(235, 235, 235);
-  border: 1px solid black;
+  border: 2px solid rgb(131, 131, 131);
   border-collapse: collapse;
 }
 td {
   width: 35px;
   height: 5px;
   padding: 1px;
-  border: 1px solid black;
+  border: 2px solid rgb(131, 131, 131);
   text-align: center;
 }
 .casezero {
