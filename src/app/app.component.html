@@ -1,13 +1,9 @@
 <h1>Dictionnaire de gammes</h1>
 
-<h1>Gamme Majeure</h1>
-<ng-container *ngFor="let noteCode of Note.notes">
+<!-- <ng-container *ngFor="let noteCode of Note.notes">
   <h2>Gamme Majeure en {{ Note.asString(noteCode) }}</h2>
-  <app-six-strings [allowedNotes]="Gamme.asNoteCodes(Gamme.majorOf(noteCode))"></app-six-strings>
-</ng-container>
+  <app-six-strings [allowedNotes]="Gamme.asNoteCodes(Gamme.build('Majeure', noteCode))"></app-six-strings>
+</ng-container> -->
 
-<h1>Gamme Mineure Harmonique</h1>
-<ng-container *ngFor="let noteCode of Note.notes">
-    <h2>Gamme Mineure Harmonique en {{ Note.asString(noteCode) }}</h2>
-    <app-six-strings [allowedNotes]="Gamme.asNoteCodes(Gamme.harmonicMinorOf(noteCode))"></app-six-strings>
-  </ng-container>
+<app-six-strings [allowedNotes]="allowedNotes">
+</app-six-strings>
