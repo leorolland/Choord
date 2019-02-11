@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   GammeService = GammeService;
   NoteCode = NoteCode;
   Note = Note;
-  allowedNotes: Array<NoteCode>;
+  allowedNotes: Array<NoteCode> = [];
 
   private _gammeService: GammeService;
 

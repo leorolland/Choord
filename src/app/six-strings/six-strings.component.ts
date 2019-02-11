@@ -14,10 +14,10 @@ export class SixStringsComponent implements OnInit {
   public static fretsCount = 21;
 
   @Input()
-  allowedNotes: Array<NoteCode>;
+  allowedNotes: Array<NoteCode> = [];
 
   @Output()
-  selectedNotes: EventEmitter<Array<NoteCode>>;
+  selectedNotes: EventEmitter<Array<NoteCode>> = new EventEmitter();
 
   private strings: Note[];
 
