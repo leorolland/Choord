@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subscribable, BehaviorSubject, Subscription } from 'rxjs';
 import { Injectable, OnInit } from '@angular/core';
 import { GammeApiObject } from "./GammeApiObject";
+import { getAllDebugNodes } from "@angular/core/src/debug/debug_node";
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,18 @@ export class GammeService implements OnInit{
     return notes.map((n: Note)=>n.getNoteCode())
   }
 
+  public searchGamme(notes: NoteCode[]): Gamme[] {
+    let output: Gamme[] = []
+    this._gammes.value.forEach((g:Gamme) => {
+      let includeIt = true
+      notes.forEach((note: NoteCode) => {
+        includeIt = includeIt && g.notes.includes(note)
+      })
+      if (includeIt) output.push(g)
+    })
+    return output
+  }
+
   /**
    * Charge les gammes - Télécharge le fichier contentant 
    * les intervalles de gamme et construit la liste des gammes possibles
@@ -41,17 +54,15 @@ export class GammeService implements OnInit{
     // Récupération de la liste des gammes de l'API
     const gammeApiObs: Observable<GammeApiObject[]> = this.http.get<GammeApiObject[]>("./assets/gammes.json")
     let subscription: Subscription = gammeApiObs.subscribe((data: GammeApiObject[]) => {
-      // Une fois que les données sont récupérées, on construit les gammes
-      let gammeNotes: Note[]
+      // Accumulateur
+      let gammes: Gamme[] = []
       // Pour chaque gamme de l'API
       data.forEach((elt: GammeApiObject) => {
         // Pour chaque tonique possible
-        Note.notes.forEach((note: NoteCode) => {
-          let newValue = this._gammes.value
-          newValue.push(this.getGammeFromJson(note, elt))
-          this._gammes.next(newValue)
-        })
+        Note.notes.forEach((note: NoteCode) => gammes.push(this.getGammeFromJson(note, elt)) )
       })
+      // Attribution des nouvelles gammes
+      this._gammes.next(gammes)
       // Suppression de la souscribtion
       subscription.unsubscribe()
       console.log("Chargement terminé.")

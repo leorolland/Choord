@@ -5,10 +5,10 @@
   <app-six-strings [allowedNotes]="Gamme.asNoteCodes(Gamme.build('Majeure', noteCode))"></app-six-strings>
 </ng-container> -->
 
-<app-six-strings [allowedNotes]="allowedNotes"></app-six-strings>
+<app-six-strings [allowedNotes]="allowedNotes" (selectedNotes)="onSelectionChanges($event)"></app-six-strings>
 
-<!-- <ng-container *ngFor="let gamme of _gammes">
-  <h2>Gamme {{ gamme.name }} en {{ gamme.tonique }}</h2>
+<ng-container *ngFor="let gamme of _filteredGammes">
+  <h2>Gamme {{ gamme.name }} en {{ Note.asString(gamme.tonique) }}</h2>
   <app-six-strings [allowedNotes]="gamme.notes"></app-six-strings>
-</ng-container> -->
+</ng-container>
 

@@ -3,6 +3,7 @@ import { Note } from './music/Note';
 import { Gamme } from './music/Gamme'
 import { NoteCode } from './music/NoteCode';
 import { GammeService } from './music/GammeService';
+import { EventEmitter } from 'events';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +11,15 @@ import { GammeService } from './music/GammeService';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  GammeService = GammeService;
-  NoteCode = NoteCode;
-  Note = Note;
-  allowedNotes: Array<NoteCode> = [];
+  GammeService = GammeService
+  NoteCode = NoteCode
+  Note = Note
+  allowedNotes: Array<NoteCode> = []
 
-  private _gammeService: GammeService;
+  private _gammeService: GammeService
 
-  private _gammes: Gamme[] = [];
+  private _gammes: Gamme[] = []
+  private _filteredGammes: Gamme[] = []
   
   title = 'Choord';
 
@@ -26,10 +28,17 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Récupération des gammes
     this._gammeService.fetchGammes()
     this._gammeService.gammes.subscribe((gammes: Gamme[]) => {
       this._gammes = gammes
     })
+  }
+
+  onSelectionChanges(e: Array<NoteCode>) {
+    this._filteredGammes = this._gammeService.searchGamme(e)
+    console.log(this._filteredGammes)
+    console.log(e)
   }
 
 }
