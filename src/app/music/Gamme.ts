@@ -20,6 +20,21 @@ export class Gamme {
     gamme.push( Note.numberToNote(tonic.getNumber() + 11) );
     return gamme;
   }
+
+  // 1 - 1/2 - 1 - 1 - 1/2 - 1,5 - 1/2
+  public static harmonicMinorOf(tonicCode: NoteCode): Note[] {
+    const tonic: Note = new Note(tonicCode);
+    // Création de la gamme à partir de la tonique
+    let gamme: Note[] = [tonic];
+    gamme.push( Note.numberToNote(tonic.getNumber() + 2) ); // 2M
+    gamme.push( Note.numberToNote(tonic.getNumber() + 3) ); // 3M
+    gamme.push( Note.numberToNote(tonic.getNumber() + 5) ); // 4j
+    gamme.push( Note.numberToNote(tonic.getNumber() + 7) ); // 5j
+    gamme.push( Note.numberToNote(tonic.getNumber() + 8) ); // 6m
+    gamme.push( Note.numberToNote(tonic.getNumber() + 11) ); // 7m
+    gamme.push( Note.numberToNote(tonic.getNumber() + 12) );
+    return gamme;
+  }
   
 
 }
