@@ -1,22 +1,28 @@
 import { NoteCode } from "./NoteCode";
 import { Note } from "./Note";
+import { Gamme } from "./Gamme"
 import { HttpClient } from '@angular/common/http'; 
-import { Observable, Subscribable, BehaviorSubject } from 'rxjs';
+import { Observable, Subscribable, BehaviorSubject, Subscription } from 'rxjs';
 import { Injectable, OnInit } from '@angular/core';
 import { GammeApiObject } from "./GammeApiObject";
 
 @Injectable({
   providedIn: 'root',
 })
-export class GammeService {
+export class GammeService implements OnInit{
 
   /**
    * Gammes object storage
    */
-  private _gammesJson: BehaviorSubject<GammeApiObject[]> = new BehaviorSubject<GammeApiObject[]>(null);
-  public readonly gammesJson: Observable<GammeApiObject[]> = this._gammesJson.asObservable();
+  private _gammes: BehaviorSubject<Gamme[]> = new BehaviorSubject<Gamme[]>([]);
+  public readonly gammes: Observable<Gamme[]> = this._gammes.asObservable();
 
   constructor(private http: HttpClient) {
+
+  }
+
+  ngOnInit(): void {
+    this.fetchGammes()
   }
 
   /**
@@ -27,55 +33,51 @@ export class GammeService {
   }
 
   /**
-   * Construit une gamme à partir des paramètres entrés
-   * @param name Le nom de la gamme (par ex: "Pentatonique Mineure")
-   * @param tonicCode La tonique de la gamme
-   * @returns Une promesse contenant les notes de la gamme
+   * Charge les gammes - Télécharge le fichier contentant 
+   * les intervalles de gamme et construit la liste des gammes possibles
    */
-  public buildGamme(name: string, tonicCode: NoteCode): Promise<Note[]> {
-    return new Promise((resolve, reject) => {
-      // Si l'objet gammesJson n'est pas déjà téléchargé
-      if (this._gammesJson.getValue() == null) {
-        // On télécharge les données de l'API qui sera stoqué dans un observable local
-        this.getGammesApiObjects().subscribe( (data:GammeApiObject[]) => {
-          this._gammesJson.next(data); // On stoque la réponse
-          resolve( GammeService.getGammeFromJson(name, tonicCode, data) ) // On resolve la réponse
-        });
-      } else {
-        // La réponse de l'API est déjà téléchargée, on resolve la réponse
-        resolve( GammeService.getGammeFromJson(name, tonicCode, this._gammesJson.getValue()) )
-      }
+  public fetchGammes() {
+    console.log("Chargement des gammes ...")
+    // Récupération de la liste des gammes de l'API
+    const gammeApiObs: Observable<GammeApiObject[]> = this.http.get<GammeApiObject[]>("./assets/gammes.json")
+    let subscription: Subscription = gammeApiObs.subscribe((data: GammeApiObject[]) => {
+      // Une fois que les données sont récupérées, on construit les gammes
+      let gammeNotes: Note[]
+      // Pour chaque gamme de l'API
+      data.forEach((elt: GammeApiObject) => {
+        // Pour chaque tonique possible
+        Note.notes.forEach((note: NoteCode) => {
+          let newValue = this._gammes.value
+          newValue.push(this.getGammeFromJson(note, elt))
+          this._gammes.next(newValue)
+        })
+      })
+      // Suppression de la souscribtion
+      subscription.unsubscribe()
+      console.log("Chargement terminé.")
     })
   }
-
   /**
-   * Génère un ensemble de notes (gammes) à partir d'un ensemble de gammes généré par l'API et d'une tonique
-   * @param gamme Le nom de la gamme à générer Ex: "Pentatonique Majeure"
+   * Génère une gamme à partir d'un ensemble à partir d'une tonique et d'un GammeApiObject
    * @param tonicCode Le code de la tonique de la gamme à générer
    * @param json L'objet Json contenant l'ensemble des gammes de l'API
    */
-  private static getGammeFromJson(gamme: string, tonicCode: NoteCode, json:GammeApiObject[]): Note[]{
-    // Intervalles de génération de la gamme à partir d'une tonique quelconque
-    let intervals: number[];
-    json.forEach(element => {
-      if (element.name == gamme)
-        intervals = element.intervals;
-    });
-    // Gamme (sortie)
+  private getGammeFromJson(tonicCode: NoteCode, json: GammeApiObject): Gamme {
+    let gamme: Gamme = new Gamme()
+    // Variable temporaire accumulant les notes, commençant par la tonique
     let output: Note[] = [new Note(tonicCode)];
     // Pour chaque intervalle
-    intervals.forEach((int: number) => {
+    json.intervals.forEach((int: number) => {
       // On récupère la dernière Note de la game en cours de génération
       const lastOutputNote: Note = output[output.length-1];
       // On ajoute une nouvelle Note formée de la dernière note plus l'intervalle voulu
       output.push(Note.numberToNote( lastOutputNote.getNumber() + int ) )
     })
-    return output;
-  }
-
-  public getGammesApiObjects(): Observable<GammeApiObject[]> {
-    // Map les valeurs du JSON de l'API dans des objets GammeApiObject
-    return this.http.get<GammeApiObject[]>("./assets/gammes.json")
+    gamme.name = json.name
+    gamme.tonique = tonicCode
+    gamme.notes = GammeService.asNoteCodes(output)
+    gamme.intervals = json.intervals
+    return gamme;
   }
   
 }
