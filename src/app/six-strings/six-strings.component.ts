@@ -16,6 +16,9 @@ export class SixStringsComponent implements OnInit {
   @Input()
   allowedNotes: Array<NoteCode> = [];
 
+  @Input()
+  highlightedNotes: Array<NoteCode> = [];
+
   @Output()
   selectedNotes: EventEmitter<Array<NoteCode>> = new EventEmitter();
 

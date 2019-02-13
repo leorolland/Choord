@@ -36,9 +36,11 @@ export class AppComponent implements OnInit {
   }
 
   onSelectionChanges(e: Array<NoteCode>) {
-    this._filteredGammes = this._gammeService.searchGamme(e)
-    console.log(this._filteredGammes)
-    console.log(e)
+    if (e.length >= 2) {
+      this._filteredGammes = this._gammeService.searchGamme(e, 10)
+    } else {
+      this._filteredGammes = []
+    }
   }
 
 }

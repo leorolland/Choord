@@ -33,13 +33,30 @@ export class GammeService implements OnInit{
     return notes.map((n: Note)=>n.getNoteCode())
   }
 
-  public searchGamme(notes: NoteCode[]): Gamme[] {
+  /**
+   * Renvoie les notes de s1 non contenues dans s2
+   * @param s1 Un set de notes
+   * @param s2 Un set de notes
+   */
+  public static notIn(s1: NoteCode[], s2: NoteCode[]) {
+    return s1.filter(n=>!s2.includes(n))
+  }
+
+  /**
+   * Renvoie les gammes qui contiennent les notes recherchées
+   * @param notes Un ensemble de notes à chercher
+   * @param max Le nombre maximal de gammes à retourner
+   */
+  public searchGamme(notes: NoteCode[], max?: number): Gamme[] {
     let output: Gamme[] = []
     this._gammes.value.forEach((g:Gamme) => {
+      if (max && output.length>=max) return output
       let includeIt = true
-      notes.forEach((note: NoteCode) => {
-        includeIt = includeIt && g.notes.includes(note)
-      })
+      let index = 0
+      while (includeIt && index<notes.length) {
+        includeIt = g.notes.includes(notes[index])
+        index++
+      }
       if (includeIt) output.push(g)
     })
     return output

@@ -1,13 +1,16 @@
 Notes autorisées : 
 <ng-container *ngFor="let noteCode of allowedNotes">
-  <div class="note {{noteCode}}">{{ Note.asString(noteCode) }}</div>
+  <div class="note {{noteCode}}">
+    {{ Note.asString(noteCode) }}
+  </div>
 </ng-container>
 <table>
   <tr *ngFor="let stringNote of strings">
     <ng-container *ngFor="let note of getNotesFromString(stringNote); let i = index" [attr.data-index]="i">
-      <td class="{{ i==0? 'casezero' : 'noncasezero' }}">
-        <div class="note {{note.getNoteCode()}} {{ ( allowedNotes && this.allowedNotes.includes(note.toString()) ) ? '' : 'transparentNote  '}} "
-         (click)="onNoteClick(note.getNoteCode())">
+      <td class="{{ i==0? 'casezero' : 'noncasezero' }} {{ highlightedNotes.includes(note.getNoteCode()) ? 'highlighted' : 'nothighlighted' }}">
+        <div 
+          class="note {{ note.getNoteCode() }} {{ ( allowedNotes && this.allowedNotes.includes(note.toString()) ) ? '' : 'transparentNote '}}"
+          (click)="onNoteClick(note.getNoteCode())">
           {{ Note.asString(note.toString()) }}
         </div>
       </td>
