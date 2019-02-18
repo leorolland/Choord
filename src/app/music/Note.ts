@@ -35,13 +35,19 @@ export class Note {
   public static notes: Array<NoteCode> = [NoteCode.C, NoteCode.CS, NoteCode.D, NoteCode.DS, NoteCode.E, NoteCode.F, NoteCode.FS, NoteCode.G, NoteCode.GS, NoteCode.A, NoteCode.AS, NoteCode.B];
 
   private noteCode: NoteCode;
+  private hauteur: number;
 
-  constructor(code: NoteCode) {
+  constructor(code: NoteCode, hauteur?: number) {
+    this.hauteur = hauteur == null ? hauteur : 3
     this.noteCode = code;
   }
 
   public getNoteCode(): NoteCode {
     return this.noteCode;
+  }
+
+  public getHauteur(): number {
+    return this.hauteur
   }
 
   public toString(): string {
