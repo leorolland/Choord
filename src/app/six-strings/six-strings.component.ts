@@ -27,11 +27,11 @@ export class SixStringsComponent implements OnInit {
 
   public static strings: Note[] = [
     new Note(NoteCode.E, 4),
-    new Note(NoteCode.B, 4),
-    new Note(NoteCode.G, 4),
-    new Note(NoteCode.D, 4),
-    new Note(NoteCode.A, 3),
-    new Note(NoteCode.E, 3)
+    new Note(NoteCode.B, 3),
+    new Note(NoteCode.G, 3),
+    new Note(NoteCode.D, 3),
+    new Note(NoteCode.A, 2),
+    new Note(NoteCode.E, 2)
   ]
 
   private completeStrings: Note[][] = new Array<Array<Note>>()
