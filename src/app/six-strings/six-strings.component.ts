@@ -20,6 +20,9 @@ export class SixStringsComponent implements OnInit {
   @Input()
   highlightedNotes: Array<NoteCode> = [];
 
+  @Input()
+  frozen: boolean = false;
+
   @Output()
   selectedNotes: EventEmitter<Array<NoteCode>> = new EventEmitter();
 
@@ -58,15 +61,17 @@ export class SixStringsComponent implements OnInit {
   onNoteClick(note: Note) {
     // On émet un son
     this.soundplayerService.playNote(note.getNoteCode(), note.getHauteur())
-    // Si la note était présente dans les notes autorisées on la retire
-    if (this.allowedNotes.includes(note.getNoteCode())) {
-      this.allowedNotes.splice(this.allowedNotes.indexOf(note.getNoteCode()), 1)
-      this.emitAllowedNotes()
-    }
-    // Sinon on l'ajoute
-    else {
-      this.allowedNotes.push(note.getNoteCode())
-      this.emitAllowedNotes()
+    if (!this.frozen) {
+      // Si la note était présente dans les notes autorisées on la retire
+      if (this.allowedNotes.includes(note.getNoteCode())) {
+        this.allowedNotes.splice(this.allowedNotes.indexOf(note.getNoteCode()), 1)
+        this.emitAllowedNotes()
+      }
+      // Sinon on l'ajoute
+      else {
+        this.allowedNotes.push(note.getNoteCode())
+        this.emitAllowedNotes()
+      }
     }
   }
 

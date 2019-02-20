@@ -10,6 +10,6 @@
 <h3>Affichage limité à {{ _filteredGammes.length }} gammes trouvées</h3>
 <ng-container *ngFor="let gamme of _filteredGammes">
   <h2>Gamme {{ gamme.name }} en {{ Note.asString(gamme.tonique) }}</h2>
-  <app-six-strings [allowedNotes]="gamme.notes" [highlightedNotes]="GammeService.notIn(gamme.notes, allowedNotes)"></app-six-strings>
+  <app-six-strings [allowedNotes]="gamme.notes" [highlightedNotes]="GammeService.notIn(gamme.notes, allowedNotes)" [frozen]="true"></app-six-strings>
 </ng-container>
 
