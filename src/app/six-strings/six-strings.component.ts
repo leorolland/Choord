@@ -110,4 +110,22 @@ export class SixStringsComponent implements OnInit {
     this.selectedNotes.emit(this.allowedNotes);
   }
 
+  /**
+   * Plays allowed notes to speakers
+   */
+  playAllowedNotes() {
+    let hauteur: number = 3;
+    // Si la note actuelle est inférieure à la note précédente, on augmente la hauteur
+    // Cela permet de faire sonner la gamme du plus grave au plus aigu
+    for (let i = 0; i < this.allowedNotes.length; i++) {
+      if (i>0 && Note.getNoteCodeIndex(this.allowedNotes[i]) < Note.getNoteCodeIndex(this.allowedNotes[i-1])) {
+        hauteur++
+      }
+      const note: Note = new Note(this.allowedNotes[i], hauteur);
+      setTimeout(()=>{
+        this.soundplayerService.playNote(note)
+      }, i*300)
+    }
+  }
+
 }

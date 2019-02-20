@@ -114,6 +114,38 @@ export class Note {
   }
 
   /**
+   * Retourne l'index de la noteCode donnée
+   */
+  public static getNoteCodeIndex(nc: NoteCode): number {
+    switch (nc) {
+      case NoteCode.C:
+        return 0
+      case NoteCode.CS:
+        return 1
+      case NoteCode.D:
+        return 2
+      case NoteCode.DS:
+        return 3
+      case NoteCode.E:
+        return 4
+      case NoteCode.F:
+        return 5
+      case NoteCode.FS:
+        return 6
+      case NoteCode.G:
+        return 7
+      case NoteCode.GS:
+        return 8
+      case NoteCode.A:
+        return 9
+      case NoteCode.AS:
+        return 10
+      case NoteCode.B:
+        return 11
+    }
+  }
+
+  /**
    * Renvoie a note d'un demi-ton au dessus
    */
   public notePlusUn(): Note {

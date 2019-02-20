@@ -4,6 +4,7 @@ Notes autorisées :
     {{ Note.asString(noteCode) }}
   </div>
 </ng-container>
+<button (click)='playAllowedNotes()'>Jouer</button>
 <table>
   <tr *ngFor="let stringNote of completeStrings; let x = index">
     <ng-container *ngFor="let note of stringNote; let i = index" [attr.data-index]="i">
