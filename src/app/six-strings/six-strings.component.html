@@ -5,12 +5,12 @@ Notes autorisées :
   </div>
 </ng-container>
 <table>
-  <tr *ngFor="let stringNote of strings">
-    <ng-container *ngFor="let note of getNotesFromString(stringNote); let i = index" [attr.data-index]="i">
+  <tr *ngFor="let stringNote of completeStrings; let x = index">
+    <ng-container *ngFor="let note of stringNote; let i = index" [attr.data-index]="i">
       <td class="{{ i==0? 'casezero' : 'noncasezero' }} {{ highlightedNotes.includes(note.getNoteCode()) ? 'highlighted' : 'nothighlighted' }}">
         <div 
           class="note {{ note.getNoteCode() }} {{ ( allowedNotes && this.allowedNotes.includes(note.toString()) ) ? '' : 'transparentNote '}}"
-          (click)="onNoteClick(note.getNoteCode())">
+          (click)="onNoteClick(note)">
           {{ Note.asString(note.toString()) }}
         </div>
       </td>

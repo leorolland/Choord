@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { Note } from '../music/Note';
 import { NoteCode } from '../music/NoteCode';
 import { EventEmitter } from '@angular/core';
+import { SoundplayerService } from '../music/soundplayer.service';
 
 @Component({
   selector: 'app-six-strings',
@@ -22,41 +23,51 @@ export class SixStringsComponent implements OnInit {
   @Output()
   selectedNotes: EventEmitter<Array<NoteCode>> = new EventEmitter();
 
-  private strings: Note[];
+  private soundplayerService: SoundplayerService;
 
-  constructor() { }
+  public static strings: Note[] = [
+    new Note(NoteCode.E, 4),
+    new Note(NoteCode.B, 4),
+    new Note(NoteCode.G, 4),
+    new Note(NoteCode.D, 4),
+    new Note(NoteCode.A, 3),
+    new Note(NoteCode.E, 3)
+  ]
+
+  private completeStrings: Note[][] = new Array<Array<Note>>()
+
+  constructor(private _soundplayerService: SoundplayerService) { 
+    this.soundplayerService = _soundplayerService
+  }
 
   ngOnInit() {
-    this.strings = [
-      new Note(NoteCode.E),
-      new Note(NoteCode.B),
-      new Note(NoteCode.G),
-      new Note(NoteCode.D),
-      new Note(NoteCode.A),
-      new Note(NoteCode.E)
-    ]
+    // Génération des cordes completes
+    this.completeStrings = SixStringsComponent.strings.map((n: Note)=>this.getNotesFromString(n))
+    console.log(this.completeStrings)
   }
 
   public getNotesFromString(stringNote: Note): Note[] {
     let output: Note[] = [];
-    for (let index = stringNote.getNumber(); index < stringNote.getNumber() + SixStringsComponent.fretsCount; index++) {
-      output.push(Note.numberToNote(index))
+    output.push(stringNote)
+    for (let i = 1; i < SixStringsComponent.fretsCount; i++) {
+      output.push((output[output.length-1].notePlusUn()))
     }
     return output;
   }
 
-  onNoteClick(noteCode: NoteCode) {
+  onNoteClick(note: Note) {
+    // On émet un son
+    this.soundplayerService.playNote(note.getNoteCode(), note.getHauteur())
     // Si la note était présente dans les notes autorisées on la retire
-    if (this.allowedNotes.includes(noteCode)) {
-      this.allowedNotes.splice(this.allowedNotes.indexOf(noteCode), 1)
+    if (this.allowedNotes.includes(note.getNoteCode())) {
+      this.allowedNotes.splice(this.allowedNotes.indexOf(note.getNoteCode()), 1)
       this.emitAllowedNotes()
     }
     // Sinon on l'ajoute
     else {
-      this.allowedNotes.push(noteCode)
+      this.allowedNotes.push(note.getNoteCode())
       this.emitAllowedNotes()
     }
-
   }
 
   emitAllowedNotes() {
