@@ -12,10 +12,13 @@ export class SoundplayerService {
     this.synth = new Tone.Synth().toMaster();
   }
 
-  public playNote(noteCode: NoteCode, hauteur: number) {
-    let note: String = Note.asStringCodeBemols(noteCode) + hauteur.toString()
-    console.log("Note jouée : " + note)
-    this.synth.triggerAttackRelease(note, "8n");
+  /**
+   * Joue la note entrée en paramètre
+   */
+  public playNote(note: Note) {
+    let noteStr: String = Note.asStringCodeBemols(note.getNoteCode()) + note.getHauteur().toString()
+    console.log("Note jouée : " + noteStr)
+    this.synth.triggerAttackRelease(noteStr, "8n");
   }
 
 }

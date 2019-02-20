@@ -3,6 +3,10 @@ import { NoteCode } from "./NoteCode";
 
 export class Note {
 
+  /**
+   * Transforms a given note into string
+   * @param note Note à tranformer
+   */
   public static asString(note: NoteCode): string {
     switch (note) {
       case NoteCode.C:
@@ -31,7 +35,10 @@ export class Note {
         return "Si"
     }
   }
-
+  /**
+   * Transforms a given note into string formatted bemol (okay for Tone.js API)
+   * @param note Note à tranformer
+   */
   public static asStringCodeBemols(note: NoteCode): string {
     switch (note) {
       case NoteCode.C:
@@ -61,9 +68,19 @@ export class Note {
     }
   }
 
+  /**
+   * Defines all allowed notesCodes in music theory
+   */
   public static notes: Array<NoteCode> = [NoteCode.C, NoteCode.CS, NoteCode.D, NoteCode.DS, NoteCode.E, NoteCode.F, NoteCode.FS, NoteCode.G, NoteCode.GS, NoteCode.A, NoteCode.AS, NoteCode.B];
 
+  /**
+   * NoteCode of the Note
+   */
   private noteCode: NoteCode;
+
+  /**
+   * Height of the Note (ex: La3 -> height of 3)
+   */
   private hauteur: number;
 
   constructor(code: NoteCode, hauteur?: number) {
@@ -74,23 +91,23 @@ export class Note {
   public getNoteCode(): NoteCode {
     return this.noteCode;
   }
-
   public getHauteur(): number {
     return this.hauteur
   }
-
   public setHauteur(h: number) {
     this.hauteur = h
   }
-
   public toString(): string {
     return this.noteCode;
   }
-
   public getNumber(): number {
     return Note.notes.indexOf(this.noteCode);
   }
 
+  /**
+   * 
+   * @param input An integer representing the NoteCode in modulo 12
+   */
   public static numberToNote(input: number): Note {
     const rest: number = input % Note.notes.length;
     return new Note(Note.notes[rest]);
