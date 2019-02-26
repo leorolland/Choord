@@ -4,9 +4,8 @@
   <h2>Gamme Majeure en {{ Note.asString(noteCode) }}</h2>
   <app-six-strings [allowedNotes]="Gamme.asNoteCodes(Gamme.build('Majeure', noteCode))"></app-six-strings>
 </ng-container> -->
-
+<a class="btn btn-primary">Flat button</a>
 <app-six-strings [allowedNotes]="allowedNotes" (selectedNotes)="onSelectionChanges($event)"></app-six-strings>
-
 <h3>Affichage limité à {{ _filteredGammes.length }} gammes trouvées</h3>
 <ng-container *ngFor="let gamme of _filteredGammes">
   <h2>Gamme {{ gamme.name }} en {{ Note.asString(gamme.tonique) }}</h2>
